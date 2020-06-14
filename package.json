@@ -1,0 +1,25 @@
+{
+  "name": "grasseum_util",
+  "version": "1.0.0",
+  "description": "Design assistance in template",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Streaming build library"
+  ],
+  "dependencies": {
+    "vinyl": "2.2.0"
+  },
+  "author": "Pein Freccs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grasseum/grasseum_util.git"
+  },
+  "bugs": {
+    "url": "https://github.com/grasseum/grasseum_util/issues"
+  },
+  "homepage": "https://github.com/grasseum/grasseum_util#readme"
+}
