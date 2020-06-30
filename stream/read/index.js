@@ -11,11 +11,12 @@ var fs = require("fs")
    
     this.event = event;
    this.read_func = read_func;
-  Readable.call(this, {objectMode: true});
+  Readable.call(this, {objectMode: true,highWaterMark:32});
+  
 }; 
 util.inherits(ReadStream, Readable);
 ReadStream.prototype._destroy = function(err, callback) {
-	
+	//console.log("DA",err);
 	this.event.emit("finish");
 	callback()
 }
@@ -31,7 +32,7 @@ ReadStream.prototype._read = function(chunk, encoding) {
         data:chunk,
         encoding:encoding,
         push:function(data){
-            main.setMaxListeners(data.toString().split("").length);
+            main.setMaxListeners(data.toString().split("").length*2);
        
             main.push(data);
         },

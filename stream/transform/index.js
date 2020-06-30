@@ -7,7 +7,7 @@
      util = require('util');
  
  var TransformStream = function(init_class) {
-   Transform.call(this, {objectMode: true});
+   Transform.call(this, {objectMode: true,highWaterMark:32});
    this.init_class = init_class;
  };
  
@@ -34,6 +34,7 @@
          callback(error,data);
         },
         push:function(data){
+            main.setMaxListeners(data.toString().split("").length);
             main.push(data);
         },
         emit:function(data){

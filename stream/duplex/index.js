@@ -14,7 +14,7 @@ var duplexStream = function( event ,action) {
 
     
     
-    Duplex.call(this, {readableObjectMode: true,writableObjectMode: true,objectMode: true});
+    Duplex.call(this, {readableObjectMode: true,writableObjectMode: true,objectMode: true,highWaterMark:32});
      
     };
     
@@ -31,7 +31,7 @@ var duplexStream = function( event ,action) {
             data:chunk,
             encoding:encoding,
             callback:function(error,data){
-                main.setMaxListeners(data.toString().split("").length);
+                main.setMaxListeners(data.toString().split("").length*2);
            
              callback(error,data);
             },

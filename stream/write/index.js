@@ -14,7 +14,7 @@ var writeStream = function( event ,action) {
 
     
     
-    Writable.call(this, { objectMode: true});
+    Writable.call(this, { objectMode: true,highWaterMark:32});
      
     };
     
