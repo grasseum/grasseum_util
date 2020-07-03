@@ -2,21 +2,21 @@
 const Readable = require('stream').Readable,
  util = require('util');
 
-var fs = require("fs")
- var grasseum_directory =require("grasseum_directory");
 
- var grasseum_util =require("grasseum_util")
+
+
+ 
 
  var ReadStream = function( event,read_func) {
    
     this.event = event;
-   this.read_func = read_func;
-  Readable.call(this, {objectMode: true,highWaterMark:32});
+    this.read_func = read_func;
+    Readable.call(this, {objectMode: true,highWaterMark:32});
   
 }; 
 util.inherits(ReadStream, Readable);
 ReadStream.prototype._destroy = function(err, callback) {
-	//console.log("DA",err);
+
 	this.event.emit("finish");
 	callback()
 }

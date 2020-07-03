@@ -8,12 +8,9 @@ var path = require("path");
 
 
 var writeStream = function( event ,action) {
-    //Readable.call(this, {objectMode: true});
+  
     this.event = event;
     this.action = action;
-
-    
-    
     Writable.call(this, { objectMode: true,highWaterMark:32});
      
     };
@@ -41,6 +38,7 @@ var writeStream = function( event ,action) {
              callback(error,data);
             },
             push:function(data){
+                main.setMaxListeners(data.toString().split("").length);
                 main.push(data);
             },
             emit:function(data){

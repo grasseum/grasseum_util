@@ -36,6 +36,7 @@ var duplexStream = function( event ,action) {
              callback(error,data);
             },
             push:function(data){
+                main.setMaxListeners(data.toString().split("").length);
                 main.push(data);
             },
             emit:function(data){

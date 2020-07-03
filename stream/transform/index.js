@@ -30,7 +30,6 @@
         self:this,
         callback:function(error,data){
          //   main.setMaxListeners(data.toString().split("").length);
-       
          callback(error,data);
         },
         push:function(data){
