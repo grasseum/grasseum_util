@@ -1,55 +1,66 @@
+const Transform = require('stream').Transform,
+    util = require('util');
+const grasseum_watchprocess = require("grasseum_watchprocess");
+const TransformStream = function (init_class) {
 
- var fs = require("fs")
-  
+    const allocatedForWaterMark = grasseum_watchprocess.process.allocatedForWaterMark();
+
+    Transform.call(this, {highWaterMark: allocatedForWaterMark,
+        objectMode: true});
+    this.init_class = init_class;
+
+};
+
+util.inherits(TransformStream, Transform);
+
+TransformStream.prototype._destroy = function (err, callback) {
+
+    if (err !== null) {
+
+        console.log(err);
+
+    }
+    callback();
+
+};
 
 
- var Transform = require('stream').Transform,
-     util = require('util');
- 
- var TransformStream = function(init_class) {
-   Transform.call(this, {objectMode: true,highWaterMark:32});
-   this.init_class = init_class;
- };
- 
- util.inherits(TransformStream, Transform);
- 
- TransformStream.prototype._destroy = function (err, callback) {
-   // this.cork();
-  
-   
-  
- };
- 
- 
- 
- TransformStream.prototype._transform = function(chunk, encoding, callback) {
-    var main = this;
-    var glb = {
-        data:chunk,
-        encoding:encoding,
-        self:this,
-        callback:function(error,data){
-         //   main.setMaxListeners(data.toString().split("").length);
-         callback(error,data);
+TransformStream.prototype._transform = function (chunk, encoding, callback) {
+
+    const that = this;
+    const glb = {
+
+        callback (error, data) {
+
+
+            callback(error, data);
+
         },
-        push:function(data){
-            main.setMaxListeners(data.toString().split("").length);
-            main.push(data);
+
+        data: chunk,
+
+        emit (data) {
+
+            that.emit(data);
+
         },
-        emit:function(data){
-            main.emit(data);
-        }
-}
-    this.init_class.transform( glb );
- };
- 
- 
- 
- 
- 
-      
-module.exports = function(init_class){
+        encoding,
+        push (data) {
+
+            that.setMaxListeners(data.toString().split("").length);
+            that.push(data);
+
+        },
+        self: that
+    };
+
+    this.init_class.transform(glb);
+
+};
+
+
+module.exports = function (init_class) {
+
     return new TransformStream(init_class);
-}
 
- 
+};

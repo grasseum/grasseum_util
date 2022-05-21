@@ -4,13 +4,13 @@
   "description": "Design assistance in template",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "es_linter": "eslint stream/*.js stream/*/*.js lib/*.js main.js --fix"
   },
   "keywords": [
     "Streaming build library"
   ],
   "dependencies": {
-    "vinyl": "2.2.0"
+    "vinyl": "2.2.1"
   },
   "author": "Pein Freccs",
   "license": "MIT",

@@ -1,62 +1,72 @@
 
-Writable = require('stream').Writable,
-util = require('util');
 
+const Writable = require('stream').Writable,
+    util = require('util');
 
-var fs = require("fs");
-var path = require("path");
+const grasseum_watchprocess = require("grasseum_watchprocess");
+const WriteStream = function (event, action) {
 
+    const allocatedForWaterMark = grasseum_watchprocess.process.allocatedForWaterMark();
 
-var writeStream = function( event ,action) {
-  
     this.event = event;
     this.action = action;
-    Writable.call(this, { objectMode: true,highWaterMark:32});
-     
-    };
-    
-    util.inherits(writeStream, Writable);
-    
-    
-    writeStream.prototype._destroy = function(err, callback) {
-	
-        this.event.emit("finish");
-        callback()
+    Writable.call(this, {highWaterMark: allocatedForWaterMark,
+        objectMode: true});
+
+};
+
+util.inherits(WriteStream, Writable);
+
+
+WriteStream.prototype._destroy = function (err, callback) {
+
+    if (err !== null) {
+
+        console.log(err);
+
     }
+    this.event.emit("finish");
+    callback();
 
-    writeStream.prototype._write = function(chunk, encoding, callback) {
-      
-      var main = this;
-    
-     
-        var glb = {
-            data:chunk,
-            encoding:encoding,
-            callback:function(error,data){
-                main.setMaxListeners(data.toString().split("").length);
-           
-             callback(error,data);
-            },
-            push:function(data){
-                main.setMaxListeners(data.toString().split("").length);
-                main.push(data);
-            },
-            emit:function(data){
-                main.emit(data);
-            }
-        };
-        
-        main.action.write(glb);
+};
 
-       
-      
-        
-      };
-      
+WriteStream.prototype._write = function (chunk, encoding, callback) {
 
-      
-module.exports = function(event_steam,read_func){
-    return new writeStream(event_steam,read_func);
-}
+    const that = this;
+    const glb = {
 
- 
+        callback (error, data) {
+
+            that.setMaxListeners(data.toString().split("").length);
+
+            callback(error, data);
+
+        },
+        data: chunk,
+        emit (data) {
+
+            that.emit(data);
+
+        },
+        encoding,
+        push (data) {
+
+            that.setMaxListeners(data.toString().split("").length);
+            that.push(data);
+
+        }
+
+    };
+
+    that.action.write(glb);
+
+
+};
+
+
+module.exports = function (event_steam, read_func) {
+
+    return new WriteStream(event_steam, read_func);
+
+};
+
